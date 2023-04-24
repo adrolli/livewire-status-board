@@ -4,39 +4,40 @@ Livewire component to show records/data according to their current status
 
 ### Preview
 
-![preview](https://github.com/asantibanez/livewire-status-board/raw/master/preview.gif)
+![preview](https://github.com/adrolli/livewire-status-board/raw/master/preview.gif)
 
 ### Installation
 
 You can install the package via composer:
 
 ```bash
-composer require asantibanez/livewire-status-board
+composer require adrolli/livewire-status-board
 ```
 
 ### Requirements
 
 This package uses `livewire/livewire` (https://laravel-livewire.com/) under the hood.
 
-It also uses TailwindCSS (https://tailwindcss.com/) for base styling. 
+It also uses TailwindCSS (https://tailwindcss.com/) for base styling.
 
-Please make sure you include both of this dependencies before using this component. 
+Please make sure you include both of this dependencies before using this component.
 
 ### Usage
 
-In order to use this component, you must create a new Livewire component that extends from 
+In order to use this component, you must create a new Livewire component that extends from
 `LivewireStatusBoard`
 
 You can use `make:livewire` to create a new component. For example.
-``` bash
+
+```bash
 php artisan make:livewire SalesOrdersStatusBoard
 ```
 
-In the `SalesOrdersStatusBoard` class, instead of extending from the base Livewire `Component` class, 
-extend from `LivewireStatusBoard`. Also, remove the `render` method. 
+In the `SalesOrdersStatusBoard` class, instead of extending from the base Livewire `Component` class,
+extend from `LivewireStatusBoard`. Also, remove the `render` method.
 You'll have a class similar to this snippet.
- 
-``` php
+
+```php
 class SalesOrdersStatusBoard extends LivewireStatusBoard
 {
     //
@@ -44,13 +45,14 @@ class SalesOrdersStatusBoard extends LivewireStatusBoard
 ```
 
 In this class, you must override the following methods to display data
+
 ```php
-public function statuses() : Collection 
+public function statuses() : Collection
 {
     //
 }
 
-public function records() : Collection 
+public function records() : Collection
 {
     //
 }
@@ -108,51 +110,52 @@ public function records() : Collection
 
 As you might see in the above snippet, we must return a collection of array items where each item must have at least
 3 keys: `id`, `title` and `status`. The last one is of most importance since it is going to be used to match to which
-`status` the `record` belongs to. For this matter, the component matches `status` and `records` with the following 
+`status` the `record` belongs to. For this matter, the component matches `status` and `records` with the following
 comparison
 
 ```php
 $status['id'] == $record['status'];
-``` 
+```
 
 To render the component in a view, just use the Livewire tag or include syntax
 
 ```blade
 <livewire:sales-orders-status-board />
-```  
+```
 
 Populate the Sales Order model and you should have something similar to the following screenshot
 
-![basic](https://github.com/asantibanez/livewire-status-board/raw/master/basic.jpg)
+![basic](https://github.com/adrolli/livewire-status-board/raw/master/basic.jpg)
 
 You can render any render and statuses of your project using this approach 👍
 
 ### Sorting and Dragging
 
 By default, sorting and dragging between statuses is disabled. To enable it, you must include the following
-props when using the view: `sortable` and `sortable-between-statuses` 
+props when using the view: `sortable` and `sortable-between-statuses`
 
 ```blade
-<livewire:sales-orders-status-board 
+<livewire:sales-orders-status-board
     :sortable="true"
     :sortable-between-statuses="true"
 />
 ```
 
-`sortable` enables sorting withing each status and `sortable-between-statuses` allow drag and drop from one status 
+`sortable` enables sorting withing each status and `sortable-between-statuses` allow drag and drop from one status
 to the other. Adding these two properties, allow you to have drag and drop in place.
 
 You must also install the following JS dependencies in your project to enable sorting and dragging.
+
 ```bash
 npm install sortablejs
 ```
 
-Once installed, make them available globally in the window object. This can be done in the `bootstrap.js` file that 
+Once installed, make them available globally in the window object. This can be done in the `bootstrap.js` file that
 ships with your Laravel app.
 
 ```javascript
-window.Sortable = require('sortablejs').default;
-``` 
+window.Sortable = require("sortablejs").default;
+```
 
 ### Behavior and Interactions
 
@@ -166,7 +169,7 @@ method to get notified on this change.
 ```php
 public function onStatusSorted($recordId, $statusId, $orderedIds)
 {
-    //   
+    //
 }
 ```
 
@@ -179,10 +182,10 @@ public function onStatusChanged($recordId, $statusId, $fromOrderedIds, $toOrdere
 {
     //
 }
-``` 
+```
 
 `onStatusSorted` and `onStatusChanged` are never triggered simultaneously. You'll get notified of one or the other
-when an interaction occurs. 
+when an interaction occurs.
 
 You can also get notified when a record in the status board is clicked via the `onRecordClick` event
 
@@ -191,20 +194,20 @@ public function onRecordClick($recordId)
 {
     //
 }
-``` 
+```
 
-To enable `onRecordClick` you must specify this behavior when rendering the component through the 
+To enable `onRecordClick` you must specify this behavior when rendering the component through the
 `record-click-enabled` parameter
 
 ```blade
-<livewire:sales-orders-status-board 
+<livewire:sales-orders-status-board
     :record-click-enabled="true"
 />
 ```
 
 ### Styling
 
-To modify the look and feel of the component, you can override the `styles` method and modify the base styles returned 
+To modify the look and feel of the component, you can override the `styles` method and modify the base styles returned
 by this method to the view. `styles()` returns a keyed array with Tailwind CSS classes used to render each one of the components.
 These base keys and styles are:
 
@@ -212,13 +215,13 @@ These base keys and styles are:
 return [
     'wrapper' => 'w-full h-full flex space-x-4 overflow-x-auto', // component wrapper
     'statusWrapper' => 'h-full flex-1', // statuses wrapper
-    'status' => 'bg-blue-200 rounded px-2 flex flex-col h-full', // status column wrapper 
+    'status' => 'bg-blue-200 rounded px-2 flex flex-col h-full', // status column wrapper
     'statusHeader' => 'p-2 text-sm text-gray-700', // status header
     'statusFooter' => '', // status footer
-    'statusRecords' => 'space-y-2 p-2 flex-1 overflow-y-auto', // status records wrapper 
+    'statusRecords' => 'space-y-2 p-2 flex-1 overflow-y-auto', // status records wrapper
     'record' => 'shadow bg-white p-2 rounded border', // record wrapper
     'recordContent' => '', // record content
-]; 
+];
 ```
 
 An example of overriding the `styles()` method can be seen below
@@ -246,7 +249,7 @@ public function styles()
 
 With these new styles, your component should look like the screenshot below
 
-![basic](https://github.com/asantibanez/livewire-status-board/raw/master/styles.jpg)
+![basic](https://github.com/adrolli/livewire-status-board/raw/master/styles.jpg)
 
 Looks like Trello, right? 😅
 
@@ -260,7 +263,7 @@ needed keeping in mind to maintain the `data` attributes and `ids` along the way
 Another approach is copying the base view files into your own view files and pass them directly to your component
 
 ```blade
-<livewire:sales-orders-status-board 
+<livewire:sales-orders-status-board
     status-board-view="path/to/your/status-board-view"
     status-view="path/to/your/status-view"
     status-header-view="path/to/your/status-header-view"
@@ -277,13 +280,13 @@ such as filters or any other actions
 
 The component let's you add a view before and/or after the status board has been rendered. These two placeholders can
 be used to add extra functionality to your component like a search input or toolbar of actions. To use them, just pass
-along the views you want to use in the `before-status-board-view` and `after-status-board-view` props when displaying 
+along the views you want to use in the `before-status-board-view` and `after-status-board-view` props when displaying
 the component.
 
 ```blade
-<livewire:sales-orders-status-board 
+<livewire:sales-orders-status-board
     before-status-board-view="path/to/your/before-status-board-view"
-    after-status-board-view="path/to/your/after-status-board-view"  
+    after-status-board-view="path/to/your/after-status-board-view"
 />
 ```
 
@@ -291,11 +294,11 @@ Note: These views are optional.
 
 In the following example, a `before-status-board-view` has been specified to add a search text box and a button
 
-![extra-views](https://github.com/asantibanez/livewire-status-board/raw/master/extra-views.jpg)
+![extra-views](https://github.com/adrolli/livewire-status-board/raw/master/extra-views.jpg)
 
 ### Testing
 
-``` bash
+```bash
 composer test
 ```
 
@@ -309,12 +312,13 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ### Security
 
-If you discover any security related issues, please email santibanez.andres@gmail.com instead of using the issue tracker.
+If you discover any security related issues, please email alf@drollinger.info instead of using the issue tracker.
 
 ## Credits
 
-- [Andrés Santibáñez](https://github.com/asantibanez)
-- [All Contributors](../../contributors)
+-   [Andrés Santibáñez](https://github.com/asantibanez)
+-   [Alf Drollinger](https://github.com/adrolli)
+-   [All Contributors](../../contributors)
 
 ## License
 
